@@ -1,0 +1,1069 @@
+<title>Studio Arm Dossier</title>
+<style>
+
+  /* ============ TOKENS ============ */
+  :root{
+    --paper: #EDEAE1;
+    --paper-raised: #F6F4EC;
+    --ink: #15181F;
+    --ink-soft: #52555C;
+    --ink-faint: #83807A;
+    --line: #CFC9B8;
+    --line-strong: #B3AB93;
+    --navy: #1C2B4A;
+    --navy-soft: #3C4A68;
+    --brass: #8C6A2A;
+    --brass-strong: #6E5320;
+    --good: #3C6E4F;
+    --warn: #8A5A22;
+    --risk: #8C3B34;
+
+    --spectra: #5A4CC7;
+    --spectra-2: #B9752F;
+    --monolith: #7C6644;
+    --monolith-2: #A79876;
+    --aria: #A6841F;
+    --aria-2: #6B6B72;
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --font-label: "Helvetica Neue Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #0D111A;
+      --paper-raised: #151A26;
+      --ink: #EAE7DE;
+      --ink-soft: #ABAEB8;
+      --ink-faint: #6E7180;
+      --line: #2A3040;
+      --line-strong: #3C4356;
+      --navy: #7E93C4;
+      --navy-soft: #5C6E97;
+      --brass: #CBA35C;
+      --brass-strong: #DDB877;
+      --good: #6FA983;
+      --warn: #C79352;
+      --risk: #C4756A;
+
+      --spectra: #8F82E8;
+      --spectra-2: #D99A56;
+      --monolith: #B49E77;
+      --monolith-2: #8C7C5C;
+      --aria: #D6B84A;
+      --aria-2: #9496A2;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #0D111A;
+    --paper-raised: #151A26;
+    --ink: #EAE7DE;
+    --ink-soft: #ABAEB8;
+    --ink-faint: #6E7180;
+    --line: #2A3040;
+    --line-strong: #3C4356;
+    --navy: #7E93C4;
+    --navy-soft: #5C6E97;
+    --brass: #CBA35C;
+    --brass-strong: #DDB877;
+    --good: #6FA983;
+    --warn: #C79352;
+    --risk: #C4756A;
+
+    --spectra: #8F82E8;
+    --spectra-2: #D99A56;
+    --monolith: #B49E77;
+    --monolith-2: #8C7C5C;
+    --aria: #D6B84A;
+    --aria-2: #9496A2;
+  }
+
+  /* ============ RESET / BASE ============ */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:var(--font-display); font-weight:600; margin:0; text-wrap:balance; color:var(--ink); }
+  p{ margin:0; }
+  a{ color:inherit; }
+  ::selection{ background:var(--brass); color:var(--paper); }
+  :focus-visible{ outline:2px solid var(--brass); outline-offset:3px; }
+
+  .eyebrow{
+    font-family:var(--font-label);
+    font-weight:700;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+
+  /* ============ SHELL ============ */
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(1.25rem,4vw,3rem) 6rem;
+  }
+
+  /* corner-bracket frame, echoes technical-drawing crop marks */
+  .framed{
+    position:relative;
+    border:1px solid var(--line);
+  }
+  .framed::before,.framed::after,
+  .framed .bl,.framed .br{
+    content:"";
+    position:absolute;
+    width:10px; height:10px;
+    border-color:var(--line-strong);
+  }
+  .framed::before{ top:-1px; left:-1px; border-top:1.5px solid var(--line-strong); border-left:1.5px solid var(--line-strong); }
+  .framed::after{ top:-1px; right:-1px; border-top:1.5px solid var(--line-strong); border-right:1.5px solid var(--line-strong); }
+  .framed .bl{ bottom:-1px; left:-1px; border-bottom:1.5px solid var(--line-strong); border-left:1.5px solid var(--line-strong); }
+  .framed .br{ bottom:-1px; right:-1px; border-bottom:1.5px solid var(--line-strong); border-right:1.5px solid var(--line-strong); }
+
+  /* ============ NAV ============ */
+  .topnav{
+    position:sticky; top:0; z-index:20;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:1180px; margin:0 auto;
+    padding:0.85rem clamp(1.25rem,4vw,3rem);
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1.5rem;
+    flex-wrap:wrap;
+  }
+  .brandmark{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+  }
+  .navlinks{
+    display:flex; gap:1.4rem;
+    list-style:none; margin:0; padding:0;
+    font-family:var(--font-label);
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    font-weight:700;
+  }
+  .navlinks a{
+    text-decoration:none; color:var(--ink-soft);
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .navlinks a:hover{ color:var(--ink); border-color:var(--brass); }
+
+  /* ============ COVER ============ */
+  .cover{
+    padding:clamp(3.5rem,8vw,6rem) 0 clamp(2.5rem,6vw,4rem);
+    animation: rise .7s ease both;
+  }
+  @keyframes rise{ from{ opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+  @media (prefers-reduced-motion: reduce){ .cover{ animation:none; } }
+
+  .doc-ref{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--ink-faint);
+    display:flex; gap:1.5rem; flex-wrap:wrap;
+    margin-bottom:1.75rem;
+  }
+  .cover h1{
+    font-size:clamp(2.4rem,6vw,4.1rem);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    max-width:15ch;
+  }
+  .cover .sub{
+    margin-top:1.1rem;
+    max-width:52ch;
+    font-size:1.1rem;
+    color:var(--ink-soft);
+  }
+
+  .verdict-row{
+    margin-top:2.75rem;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:720px){ .verdict-row{ grid-template-columns:1fr; } }
+  .verdict-cell{
+    background:var(--paper-raised);
+    padding:1.1rem 1.3rem;
+  }
+  .verdict-cell .name-row{
+    display:flex; align-items:baseline; justify-content:space-between; gap:0.6rem;
+  }
+  .verdict-cell .name{ font-family:var(--font-display); font-size:1.15rem; }
+  .verdict-cell .role{
+    font-family:var(--font-label);
+    font-size:0.64rem; letter-spacing:0.09em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:700;
+  }
+  .verdict-cell .tag{
+    margin-top:0.5rem;
+    display:inline-block;
+    font-family:var(--font-label);
+    font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase;
+    font-weight:700;
+    padding:0.2rem 0.55rem;
+    border:1px solid currentColor;
+  }
+  .tag-go{ color:var(--good); }
+  .tag-mod{ color:var(--warn); }
+  .tag-risk{ color:var(--risk); }
+
+  /* ============ SECTION SCAFFOLD ============ */
+  section{ padding-top:clamp(3.5rem,7vw,5.5rem); }
+  .section-head{
+    display:flex; align-items:baseline; gap:1.1rem;
+    margin-bottom:2.25rem;
+    border-bottom:1px solid var(--line);
+    padding-bottom:1rem;
+  }
+  .section-head .num{
+    font-family:var(--font-mono);
+    font-size:0.85rem; color:var(--ink-faint);
+  }
+  .section-head h2{ font-size:clamp(1.5rem,3vw,2rem); }
+  .lede{
+    max-width:70ch;
+    color:var(--ink-soft);
+    margin-bottom:2.25rem;
+    font-size:1.02rem;
+  }
+
+  /* ============ BRAND SPREAD ============ */
+  .brand-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.5rem;
+  }
+  @media (max-width:900px){ .brand-grid{ grid-template-columns:1fr; } }
+
+  .brand-card{
+    background:var(--paper-raised);
+    padding:1.6rem 1.5rem 1.9rem;
+    display:flex; flex-direction:column; gap:1.5rem;
+  }
+  .brand-card > .stripe{
+    height:3px; width:2.4rem;
+    background:var(--accent);
+    margin:-1.6rem -1.5rem 0.2rem;
+    margin-bottom:0;
+  }
+  .brand-card[data-brand="spectra"]{ --accent: var(--spectra); }
+  .brand-card[data-brand="monolith"]{ --accent: var(--monolith); }
+  .brand-card[data-brand="aria"]{ --accent: var(--aria); }
+
+  .brand-head .path{
+    font-family:var(--font-label);
+    font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--accent); font-weight:700;
+  }
+  .brand-head h3{
+    font-size:1.9rem;
+    margin-top:0.35rem;
+  }
+  .brand-head .pos{
+    margin-top:0.6rem;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    font-style:italic;
+    font-family:var(--font-display);
+  }
+
+  .os-list{
+    display:flex; flex-direction:column; gap:0.85rem;
+    border-top:1px solid var(--line);
+    padding-top:1rem;
+  }
+  .os-row{ display:grid; grid-template-columns:6.4rem 1fr; gap:0.75rem; }
+  .os-row .k{
+    font-family:var(--font-mono);
+    font-size:0.68rem; letter-spacing:0.02em;
+    color:var(--ink-faint);
+    padding-top:0.15rem;
+  }
+  .os-row .v{ font-size:0.88rem; color:var(--ink); }
+
+  .tagline-block{
+    border-top:1px solid var(--line);
+    padding-top:1rem;
+    display:flex; flex-direction:column; gap:0.55rem;
+  }
+  .tagline-item{ display:flex; gap:0.6rem; align-items:baseline; }
+  .tagline-item .lbl{
+    flex:0 0 auto;
+    font-family:var(--font-label);
+    font-size:0.62rem; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--ink-faint);
+    width:7.2rem;
+  }
+  .tagline-item q{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-size:0.95rem;
+    quotes:"“" "”";
+  }
+
+  .gov-row{
+    border-top:1px solid var(--line);
+    padding-top:1rem;
+  }
+  .gov-row .lbl{
+    font-family:var(--font-label); font-size:0.62rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.55rem;
+  }
+  .gov-pills{ display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .pill{
+    font-family:var(--font-mono);
+    font-size:0.66rem;
+    padding:0.28rem 0.55rem;
+    border:1px solid var(--line-strong);
+    color:var(--ink-soft);
+    display:inline-flex; align-items:center; gap:0.4rem;
+  }
+  .pill .dot{
+    width:5px; height:5px; border-radius:50%;
+    background:var(--good); flex:0 0 auto;
+  }
+  .pill.pill-partial .dot{ background:var(--warn); }
+
+  /* ============ COLOR SYSTEM ============ */
+  .color-block{ border-top:1px solid var(--line); padding-top:1rem; }
+  .color-block .lbl{
+    font-family:var(--font-label); font-size:0.62rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.6rem;
+  }
+  .swatch-row{ display:flex; gap:0.55rem; }
+  .swatch{ flex:1; display:flex; flex-direction:column; gap:0.4rem; }
+  .swatch .block{
+    height:2.4rem;
+    border:1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  }
+  .swatch .hex{
+    font-family:var(--font-mono); font-size:0.62rem;
+    color:var(--ink-faint); text-align:center;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .verdict-block{
+    border-top:1px solid var(--line);
+    padding-top:1rem;
+  }
+  .verdict-block .lbl{
+    font-family:var(--font-label); font-size:0.62rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.5rem;
+  }
+  .verdict-line{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+  .verdict-line strong{ color:var(--ink); }
+
+  .fit-block{ border-top:1px solid var(--line); padding-top:1rem; }
+  .fit-block .lbl{
+    font-family:var(--font-label); font-size:0.62rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.55rem;
+  }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .chip{
+    font-size:0.76rem;
+    padding:0.25rem 0.6rem;
+    background:color-mix(in srgb, var(--accent) 14%, transparent);
+    color:var(--accent);
+    border:1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  /* ============ NAMING LAB ============ */
+  .naming-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:1.75rem;
+  }
+  @media (max-width:960px){ .naming-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .naming-grid{ grid-template-columns:1fr; } }
+  .naming-card{
+    background:var(--paper-raised);
+    padding:1.3rem 1.15rem 1.5rem;
+    display:flex; flex-direction:column; gap:1rem;
+  }
+  .naming-card > .stripe{
+    height:3px; width:2rem;
+    background:var(--nc-accent);
+    margin:-1.3rem -1.15rem 0.15rem;
+  }
+  .naming-card h4{
+    font-size:1.35rem;
+    display:flex; align-items:baseline; gap:0.5rem; flex-wrap:wrap;
+  }
+  .naming-card .new-flag{
+    font-family:var(--font-label); font-size:0.6rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--nc-accent); font-weight:700;
+  }
+  .naming-card .pos{
+    font-family:var(--font-display); font-style:italic;
+    font-size:0.82rem; color:var(--ink-soft);
+  }
+  .naming-card .tag-line{
+    font-size:0.78rem; color:var(--ink-soft);
+    border-top:1px solid var(--line); padding-top:0.7rem;
+  }
+  .naming-card .swatch-row{ gap:0.3rem; }
+  .naming-card .swatch .block{ height:1.5rem; }
+  .naming-card .swatch .hex{ font-size:0.52rem; line-height:1.3; }
+  .naming-card .verdict-tag{
+    align-self:flex-start;
+    font-family:var(--font-label); font-size:0.62rem; letter-spacing:0.07em;
+    text-transform:uppercase; font-weight:700;
+    padding:0.2rem 0.5rem; border:1px solid currentColor;
+  }
+
+  /* ============ SEGMENTS ============ */
+  .seg-wrap{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:2.5rem; }
+  @media (max-width:880px){ .seg-wrap{ grid-template-columns:1fr; } }
+
+  .rank-table{ width:100%; border-collapse:collapse; }
+  .rank-table th{
+    font-family:var(--font-label); font-size:0.66rem; letter-spacing:0.06em;
+    text-transform:uppercase; color:var(--ink-faint); text-align:left;
+    padding:0.5rem 0.6rem; border-bottom:1px solid var(--line-strong);
+  }
+  .rank-table td{
+    padding:0.62rem 0.6rem;
+    border-bottom:1px solid var(--line);
+    font-size:0.86rem;
+    vertical-align:middle;
+  }
+  .rank-table td.num, .rank-table th.num{ font-family:var(--font-mono); font-variant-numeric:tabular-nums; text-align:right; }
+  .rank-bar-wrap{ width:100%; }
+  .rank-bar-bg{ height:6px; background:var(--line); position:relative; }
+  .rank-bar-fg{ height:100%; background:var(--brass); }
+
+  .cap-split{ display:flex; flex-direction:column; gap:1.4rem; }
+  .cap-card{ background:var(--paper-raised); padding:1.2rem 1.3rem; }
+  .cap-card .lbl{ font-family:var(--font-label); font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.6rem; }
+  .cap-card.anchor .lbl{ color:var(--navy); }
+  .cap-card.spot .lbl{ color:var(--brass-strong); }
+  .cap-card ul{ margin:0; padding-left:1.1rem; font-size:0.85rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.35rem; }
+  .cap-meter{ margin-top:1rem; height:8px; display:flex; border:1px solid var(--line-strong); overflow:hidden; }
+  .cap-meter .a{ width:40%; background:var(--navy); }
+  .cap-meter .s{ width:60%; background:var(--brass); }
+  .cap-meter-legend{ display:flex; justify-content:space-between; margin-top:0.4rem; font-family:var(--font-mono); font-size:0.68rem; color:var(--ink-faint); }
+
+  /* ============ DECISION MATRIX ============ */
+  .matrix-scroll{ overflow-x:auto; }
+  .matrix-table{ border-collapse:collapse; width:100%; min-width:640px; }
+  .matrix-table th, .matrix-table td{ padding:0.7rem 0.85rem; border-bottom:1px solid var(--line); }
+  .matrix-table thead th{
+    font-family:var(--font-label); font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase;
+    text-align:left; color:var(--ink-faint); border-bottom:1px solid var(--line-strong);
+  }
+  .matrix-table thead th.center{ text-align:center; }
+  .matrix-table tbody th{ text-align:left; font-weight:400; font-size:0.87rem; }
+  .matrix-table tbody td{ text-align:center; font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:0.92rem; }
+  .matrix-table tbody tr:hover{ background:var(--paper-raised); }
+  .matrix-table .weight{ color:var(--ink-faint); font-family:var(--font-mono); font-size:0.72rem; }
+  .matrix-table tfoot th, .matrix-table tfoot td{
+    border-bottom:none; border-top:2px solid var(--ink);
+    font-weight:700; padding-top:1rem;
+  }
+  .matrix-table tfoot td{ font-size:1rem; }
+  .total-bar{ display:inline-flex; align-items:center; gap:0.5rem; }
+  .total-bar .bg{ width:64px; height:6px; background:var(--line); position:relative; }
+  .total-bar .fg{ position:absolute; left:0; top:0; height:100%; background:var(--ink); }
+  .col-spectra{ color:var(--spectra); }
+  .col-monolith{ color:var(--monolith); }
+  .col-aria{ color:var(--aria); }
+
+  /* ============ RECOMMENDATION STRIP ============ */
+  .recommend{
+    margin-top:clamp(3.5rem,7vw,5.5rem);
+    background:var(--navy);
+    color:#EFEEE7;
+    padding:clamp(2.2rem,5vw,3.2rem) clamp(1.5rem,4vw,3rem);
+  }
+  :root[data-theme="dark"] .recommend, :root:not([data-theme="light"]) .recommend{
+    background:color-mix(in srgb, var(--navy) 55%, var(--paper-raised));
+  }
+  .recommend .eyebrow{ color:#B9C3DA; }
+  .recommend h2{ color:#F6F5EF; font-size:clamp(1.4rem,3vw,1.9rem); margin-top:0.6rem; max-width:38ch; }
+  .recommend p{ margin-top:1.1rem; max-width:64ch; color:#D7DBE6; font-size:0.98rem; }
+  .recommend .risk-note{
+    margin-top:1.6rem;
+    padding-top:1.4rem;
+    border-top:1px solid rgba(255,255,255,0.18);
+    font-size:0.88rem;
+    color:#C7CCD9;
+    max-width:64ch;
+  }
+  .recommend .risk-note strong{ color:#F0E6C8; }
+
+  footer{
+    margin-top:4rem;
+    padding-top:1.5rem;
+    border-top:1px solid var(--line);
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--ink-faint);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;
+  }
+</style>
+
+<div class="topnav">
+  <div class="topnav-inner">
+    <span class="brandmark">SS · MKT · BRF · 002-A</span>
+    <ul class="navlinks">
+      <li><a href="#spread">Sub-Brands</a></li>
+      <li><a href="#naming">Naming</a></li>
+      <li><a href="#segments">Segments</a></li>
+      <li><a href="#matrix">Decision Matrix</a></li>
+      <li><a href="#recommend">Recommendation</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="cover">
+    <div class="doc-ref">
+      <span>DOCUMENT SS&#8288;-&#8288;MKT&#8288;-&#8288;BRF&#8288;-&#8288;002</span>
+      <span>STUDIO ARM · SUB-BRAND DOSSIER</span>
+      <span>AUGUST 2026</span>
+    </div>
+    <h1>Three postures for orbit, five names on the table.</h1>
+    <p class="sub">Spectra, Monolith, and Aria anchor three strategic answers to the Studio Arm's central constraint, Brand Collision with Symphony Space's defense business. Aria's own naming lane carries five candidates — Aria, Cadenza, Rhapsody, Overture, and Soprano — scored against the same collision risk before any of them is chosen.</p>
+
+    <div class="verdict-row">
+      <div class="verdict-cell">
+        <div class="name-row"><span class="name">Spectra</span><span class="role">Primary</span></div>
+        <span class="tag tag-go">Go — with modifier</span>
+      </div>
+      <div class="verdict-cell">
+        <div class="name-row"><span class="name">Monolith</span><span class="role">Hedge</span></div>
+        <span class="tag tag-mod">Go — with modifier</span>
+      </div>
+      <div class="verdict-cell">
+        <div class="name-row"><span class="name">Aria</span><span class="role">Reserve</span></div>
+        <span class="tag tag-risk">Reconsider</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="spread">
+    <div class="section-head">
+      <span class="num">01</span>
+      <h2>The Three Sub-Brands</h2>
+    </div>
+    <p class="lede">Each posture is a distinct answer to the same question — how does the Studio Arm sell orbital moments to luxury and media brands without ever reading as an extension of a national-security contractor. The 5-Subsystem Brand&nbsp;OS maps the platform's own hardware architecture onto brand strategy for each.</p>
+
+    <div class="brand-grid">
+
+      <!-- SPECTRA -->
+      <article class="brand-card" data-brand="spectra">
+        <div class="stripe"></div>
+        <div class="brand-head">
+          <div class="path">Pathway C · Tech-Convergence · Lead Candidate</div>
+          <h3>Spectra</h3>
+          <p class="pos">"The live, orbital render engine for brands who think in signal, not just image."</p>
+        </div>
+
+        <div class="os-list">
+          <div class="os-row"><span class="k">CORE&nbsp;BUS</span><span class="v">Separate entity, GC-screened, zero shared namespace with the defense parent.</span></div>
+          <div class="os-row"><span class="k">PROTOCOL</span><span class="v">"Bring your sensor" — 15&nbsp;kg allocation drops into a pre-qualified capture module in weeks, not years.</span></div>
+          <div class="os-row"><span class="k">POWER</span><span class="v">Sells Renders — Signal Window, Live Render, Season — priced by moment, never by kilogram.</span></div>
+          <div class="os-row"><span class="k">ATTITUDE</span><span class="v">Frontier-compute register with investors; sensation and possibility with creative clients.</span></div>
+          <div class="os-row"><span class="k">ACTUATOR</span><span class="v">Render Seasons — time-locked capture/retrieve/replace cycles, media rights bundled in.</span></div>
+        </div>
+
+        <div class="tagline-block">
+          <div class="tagline-item"><span class="lbl">Evolutionary</span><q>See more spectrum.</q></div>
+          <div class="tagline-item"><span class="lbl">Disruptive</span><q>The studio that renders in orbit.</q></div>
+          <div class="tagline-item"><span class="lbl">Cat.-Breaking</span><q>Signal is the new film stock.</q></div>
+        </div>
+
+        <div class="gov-row">
+          <div class="lbl">Governance mapping</div>
+          <div class="gov-pills">
+            <span class="pill"><span class="dot"></span>Mass Silence</span>
+            <span class="pill"><span class="dot"></span>40% Cap</span>
+            <span class="pill"><span class="dot"></span>Data Firewall</span>
+            <span class="pill"><span class="dot"></span>GC Veto</span>
+            <span class="pill"><span class="dot"></span>Conversion</span>
+          </div>
+        </div>
+
+        <div class="verdict-block">
+          <div class="lbl">Naming clearance</div>
+          <p class="verdict-line"><strong>Go, with modifier.</strong> File as "Spectra Studio" or "Spectra Orbital" to clear class-specific collision with Spectrum-class telecom brands.</p>
+        </div>
+
+        <div class="color-block">
+          <div class="lbl">Color system</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="block" style="background:#0B0D12"></div><span class="hex">Void<br>#0B0D12</span></div>
+            <div class="swatch"><div class="block" style="background:#F4F3EF"></div><span class="hex">Paper<br>#F4F3EF</span></div>
+            <div class="swatch"><div class="block" style="background:#6C5CE0"></div><span class="hex">Signal Violet<br>#6C5CE0</span></div>
+            <div class="swatch"><div class="block" style="background:#C97A3A"></div><span class="hex">Thermal Amber<br>#C97A3A</span></div>
+            <div class="swatch"><div class="block" style="background:#3FB8C4"></div><span class="hex">Optical Cyan<br>#3FB8C4</span></div>
+          </div>
+        </div>
+
+        <div class="fit-block">
+          <div class="lbl">Best-fit segments</div>
+          <div class="chip-row">
+            <span class="chip">Tech &amp; AI Brands</span>
+            <span class="chip">Web3 / Digital Art</span>
+            <span class="chip">Film &amp; Streaming</span>
+            <span class="chip">Sports &amp; Live Events</span>
+            <span class="chip">Beauty &amp; Fragrance</span>
+            <span class="chip">Agencies (channel)</span>
+            <span class="chip">Deep-Tech Tenant Storytelling</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- MONOLITH -->
+      <article class="brand-card" data-brand="monolith">
+        <div class="stripe"></div>
+        <div class="brand-head">
+          <div class="path">Pathway A · Separation · Strongest Firewall</div>
+          <h3>Monolith</h3>
+          <p class="pos">"The fixed point in orbit that outlasts the campaign — a legacy address, not a launch window."</p>
+        </div>
+
+        <div class="os-list">
+          <div class="os-row"><span class="k">CORE&nbsp;BUS</span><span class="v">Fully separate legal name, visuals, and spokesperson — zero cross-reference to Symphony, anywhere.</span></div>
+          <div class="os-row"><span class="k">PROTOCOL</span><span class="v">Framed as "commissioning," not integration — same weeks-not-years onboarding, atelier vocabulary.</span></div>
+          <div class="os-row"><span class="k">POWER</span><span class="v">Sells Inscriptions — Founding, Seasonal, Solstice Window — priced by rarity of tenure.</span></div>
+          <div class="os-row"><span class="k">ATTITUDE</span><span class="v">Real-estate and institution register even with investors — never sounds like a tech company.</span></div>
+          <div class="os-row"><span class="k">ACTUATOR</span><span class="v">"The Changing of the Guard" — ceremonial swap, permanent public registry of every tenure held.</span></div>
+        </div>
+
+        <div class="tagline-block">
+          <div class="tagline-item"><span class="lbl">Evolutionary</span><q>Built to remain.</q></div>
+          <div class="tagline-item"><span class="lbl">Disruptive</span><q>The only permanent address in orbit.</q></div>
+          <div class="tagline-item"><span class="lbl">Cat.-Breaking</span><q>Legacy, set in orbit.</q></div>
+        </div>
+
+        <div class="gov-row">
+          <div class="lbl">Governance mapping</div>
+          <div class="gov-pills">
+            <span class="pill"><span class="dot"></span>Mass Silence</span>
+            <span class="pill"><span class="dot"></span>40% Cap</span>
+            <span class="pill"><span class="dot"></span>Data Firewall</span>
+            <span class="pill"><span class="dot"></span>GC Veto</span>
+            <span class="pill"><span class="dot"></span>Conversion</span>
+          </div>
+        </div>
+
+        <div class="verdict-block">
+          <div class="lbl">Naming clearance</div>
+          <p class="verdict-line"><strong>Go, with modifier.</strong> Direct contention with Monolith Productions in entertainment classes — file as "Monolith Orbital" or "The Monolith."</p>
+        </div>
+
+        <div class="color-block">
+          <div class="lbl">Color system</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="block" style="background:#1B1815"></div><span class="hex">Basalt<br>#1B1815</span></div>
+            <div class="swatch"><div class="block" style="background:#EDE7DA"></div><span class="hex">Limestone<br>#EDE7DA</span></div>
+            <div class="swatch"><div class="block" style="background:#8A6A3E"></div><span class="hex">Bronze<br>#8A6A3E</span></div>
+            <div class="swatch"><div class="block" style="background:#6B655A"></div><span class="hex">Shadow Stone<br>#6B655A</span></div>
+          </div>
+        </div>
+
+        <div class="fit-block">
+          <div class="lbl">Best-fit segments</div>
+          <div class="chip-row">
+            <span class="chip">Luxury Fashion Maisons</span>
+            <span class="chip">Watches &amp; Automotive</span>
+            <span class="chip">Sovereign &amp; Nation-Branding</span>
+            <span class="chip">Spirits &amp; Hospitality</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ARIA -->
+      <article class="brand-card" data-brand="aria">
+        <div class="stripe"></div>
+        <div class="brand-head">
+          <div class="path">Pathway B · Endorsed · Flagged Risk Case</div>
+          <h3>Aria</h3>
+          <p class="pos">"The one exclusive voice the platform lets sing solo — the most intimate booking available."</p>
+        </div>
+
+        <div class="os-list">
+          <div class="os-row"><span class="k">CORE&nbsp;BUS</span><span class="v">Same legal separation as the other two — but the name itself invites "aria of what orchestra?"</span></div>
+          <div class="os-row"><span class="k">PROTOCOL</span><span class="v">Framed as "orchestration" — a client's payload is "scored" into the platform.</span></div>
+          <div class="os-row"><span class="k">POWER</span><span class="v">Sells Solos — Recital, Solo Season, Command Performance — one client per cycle, no shared spotlight.</span></div>
+          <div class="os-row"><span class="k">ATTITUDE</span><span class="v">Investor materials deliberately avoid the musical metaphor to limit parent-brand proximity.</span></div>
+          <div class="os-row"><span class="k">ACTUATOR</span><span class="v">Swap narrated as "intermission" — single-client exclusivity is the core structural promise.</span></div>
+        </div>
+
+        <div class="tagline-block">
+          <div class="tagline-item"><span class="lbl">Evolutionary</span><q>One voice. The whole sky as its stage.</q></div>
+          <div class="tagline-item"><span class="lbl">Disruptive</span><q>No chorus, no co-stars — just you, in orbit.</q></div>
+          <div class="tagline-item"><span class="lbl">Cat.-Breaking</span><q>The rarest booking in the world is a silence, and you filling it.</q></div>
+        </div>
+
+        <div class="gov-row">
+          <div class="lbl">Governance mapping</div>
+          <div class="gov-pills">
+            <span class="pill"><span class="dot"></span>Mass Silence</span>
+            <span class="pill"><span class="dot"></span>40% Cap</span>
+            <span class="pill"><span class="dot"></span>Data Firewall</span>
+            <span class="pill pill-partial"><span class="dot"></span>GC Veto — extra check</span>
+            <span class="pill"><span class="dot"></span>Conversion</span>
+          </div>
+        </div>
+
+        <div class="verdict-block">
+          <div class="lbl">Naming clearance</div>
+          <p class="verdict-line"><strong>Reconsider</strong> — or mitigate formally before launch. Collides with Aria Resort &amp; Casino, and the name itself re-opens the "Adagio" trail back to the defense parent.</p>
+        </div>
+
+        <div class="color-block">
+          <div class="lbl">Color system</div>
+          <div class="swatch-row">
+            <div class="swatch"><div class="block" style="background:#0F0E12"></div><span class="hex">Blackout<br>#0F0E12</span></div>
+            <div class="swatch"><div class="block" style="background:#C9A227"></div><span class="hex">Spotlight Gold<br>#C9A227</span></div>
+            <div class="swatch"><div class="block" style="background:#D8D5CC"></div><span class="hex">Earthlight<br>#D8D5CC</span></div>
+            <div class="swatch"><div class="block" style="background:#2B1F33"></div><span class="hex">Velvet<br>#2B1F33</span></div>
+          </div>
+        </div>
+
+        <div class="fit-block">
+          <div class="lbl">Best-fit segments</div>
+          <div class="chip-row">
+            <span class="chip">Music &amp; Talent</span>
+            <span class="chip">Watches &amp; Jewelry</span>
+            <span class="chip">Spirits &amp; Hospitality</span>
+            <span class="chip">Fashion (single-house)</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="naming">
+    <div class="section-head">
+      <span class="num">02</span>
+      <h2>Naming Deep-Dive · Pathway B</h2>
+    </div>
+    <p class="lede">Every name under the Endorsed pathway gets its own brand OS, not just a row in a comparison table — positioning, a governing tagline, a color system, and a naming verdict, each weighed on the same two axes: how precisely the metaphor maps to the platform, and how much Brand-Collision exposure that precision costs.</p>
+
+    <div class="naming-grid">
+      <article class="naming-card" style="--nc-accent:#C9A227;">
+        <div class="stripe"></div>
+        <h4>Aria</h4>
+        <p class="pos">"The one exclusive voice the platform lets sing solo."</p>
+        <p class="tag-line">A self-contained solo sung alone against a silent stage — direct Adagio echo.</p>
+        <div class="swatch-row">
+          <div class="swatch"><div class="block" style="background:#0F0E12"></div><span class="hex">#0F0E12</span></div>
+          <div class="swatch"><div class="block" style="background:#C9A227"></div><span class="hex">#C9A227</span></div>
+          <div class="swatch"><div class="block" style="background:#D8D5CC"></div><span class="hex">#D8D5CC</span></div>
+          <div class="swatch"><div class="block" style="background:#2B1F33"></div><span class="hex">#2B1F33</span></div>
+        </div>
+        <span class="verdict-tag" style="color:var(--risk);">Reconsider</span>
+      </article>
+
+      <article class="naming-card" style="--nc-accent:#B08D57;">
+        <div class="stripe"></div>
+        <h4>Cadenza <span class="new-flag">New</span></h4>
+        <p class="pos">"No orchestra. No safety net. Just the hardest passage, played once."</p>
+        <p class="tag-line">The unaccompanied showcase passage — maps directly to the Virtuoso pod.</p>
+        <div class="swatch-row">
+          <div class="swatch"><div class="block" style="background:#1F0F14"></div><span class="hex">#1F0F14</span></div>
+          <div class="swatch"><div class="block" style="background:#F0E9DD"></div><span class="hex">#F0E9DD</span></div>
+          <div class="swatch"><div class="block" style="background:#B08D57"></div><span class="hex">#B08D57</span></div>
+          <div class="swatch"><div class="block" style="background:#7C8A99"></div><span class="hex">#7C8A99</span></div>
+        </div>
+        <span class="verdict-tag" style="color:var(--risk);">Reconsider</span>
+      </article>
+
+      <article class="naming-card" style="--nc-accent:#C65B4E;">
+        <div class="stripe"></div>
+        <h4>Rhapsody <span class="new-flag">New</span></h4>
+        <p class="pos">"Write your own movement — no form, no score."</p>
+        <p class="tag-line">Free-form, emotionally sweeping — ties to the Symphony tone, not a named part.</p>
+        <div class="swatch-row">
+          <div class="swatch"><div class="block" style="background:#14162B"></div><span class="hex">#14162B</span></div>
+          <div class="swatch"><div class="block" style="background:#F2EDE0"></div><span class="hex">#F2EDE0</span></div>
+          <div class="swatch"><div class="block" style="background:#C65B4E"></div><span class="hex">#C65B4E</span></div>
+          <div class="swatch"><div class="block" style="background:#6B5B73"></div><span class="hex">#6B5B73</span></div>
+        </div>
+        <span class="verdict-tag" style="color:var(--good);">Go</span>
+      </article>
+
+      <article class="naming-card" style="--nc-accent:#A33B34;">
+        <div class="stripe"></div>
+        <h4>Overture</h4>
+        <p class="pos">"Before the performance, there's the statement. This is it."</p>
+        <p class="tag-line">The opening piece — ties directly to the named, dated PRELUDE mission.</p>
+        <div class="swatch-row">
+          <div class="swatch"><div class="block" style="background:#191B1E"></div><span class="hex">#191B1E</span></div>
+          <div class="swatch"><div class="block" style="background:#EFE8D8"></div><span class="hex">#EFE8D8</span></div>
+          <div class="swatch"><div class="block" style="background:#A33B34"></div><span class="hex">#A33B34</span></div>
+          <div class="swatch"><div class="block" style="background:#9C7A3C"></div><span class="hex">#9C7A3C</span></div>
+        </div>
+        <span class="verdict-tag" style="color:var(--risk);">Reconsider</span>
+      </article>
+
+      <article class="naming-card" style="--nc-accent:#D4B26A;">
+        <div class="stripe"></div>
+        <h4>Soprano</h4>
+        <p class="pos">"Some stories can only be told at the top of the range."</p>
+        <p class="tag-line">Highest register, corrected off its original per-kilogram framing to pure altitude.</p>
+        <div class="swatch-row">
+          <div class="swatch"><div class="block" style="background:#101820"></div><span class="hex">#101820</span></div>
+          <div class="swatch"><div class="block" style="background:#F5F4EF"></div><span class="hex">#F5F4EF</span></div>
+          <div class="swatch"><div class="block" style="background:#B8BEC7"></div><span class="hex">#B8BEC7</span></div>
+          <div class="swatch"><div class="block" style="background:#D4B26A"></div><span class="hex">#D4B26A</span></div>
+        </div>
+        <span class="verdict-tag" style="color:var(--warn);">Go, corrected</span>
+      </article>
+    </div>
+
+    <div class="lbl" style="font-family:var(--font-label); font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:0.6rem;">Quick compare</div>
+    <div class="matrix-scroll">
+      <table class="matrix-table" style="min-width:720px;">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Classical meaning</th>
+            <th>Platform tie</th>
+            <th class="center">Collision risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Aria</th>
+            <td>A self-contained solo, sung alone against a silent stage</td>
+            <td>Adagio nomenclature, directly</td>
+            <td class="col-aria" style="font-family:var(--font-mono);">High</td>
+          </tr>
+          <tr>
+            <th>Cadenza <span style="opacity:.6; font-weight:400;">— new</span></th>
+            <td>The soloist's unaccompanied showcase passage inside a concerto</td>
+            <td><strong>Virtuoso</strong> pod, directly — the tightest metaphor of the five</td>
+            <td style="font-family:var(--font-mono); color:var(--risk);">High</td>
+          </tr>
+          <tr>
+            <th>Rhapsody <span style="opacity:.6; font-weight:400;">— new</span></th>
+            <td>A free-form, emotionally sweeping work outside strict classical structure</td>
+            <td>Tonal family only — no named subsystem</td>
+            <td style="font-family:var(--font-mono); color:var(--warn);">Medium</td>
+          </tr>
+          <tr>
+            <th>Overture</th>
+            <td>The introductory piece setting the tone for what follows</td>
+            <td>PRELUDE demo mission, thematically</td>
+            <td style="font-family:var(--font-mono); color:var(--risk);">High</td>
+          </tr>
+          <tr>
+            <th>Soprano</th>
+            <td>The highest vocal register</td>
+            <td>None — visual metaphor only</td>
+            <td style="font-family:var(--font-mono); color:var(--warn);">Medium</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede" style="margin-top:1.5rem; margin-bottom:0;"><strong style="color:var(--ink);">Rhapsody carries the lowest incremental collision exposure of the five</strong> and is the better starting point for clearance if this posture is pursued. A sixth candidate, <strong style="color:var(--ink);">Maestro</strong>, was considered and rejected outright — it is already the internal codename for Symphony's planned MEO-regime platform, which would create a direct clash with the parent's own product line rather than a merely thematic one.</p>
+  </section>
+
+  <section id="segments">
+    <div class="section-head">
+      <span class="num">03</span>
+      <h2>Segment Fit &amp; Capacity Allocation</h2>
+    </div>
+    <p class="lede">Ten luxury/media segments were scored on willingness-to-pay, strategic fit, and collision-safety. The platform's governing 40% capacity cap then splits demand into long-term anchors and premium spot/flex bookings.</p>
+
+    <div class="seg-wrap">
+      <div>
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th class="num">Score</th>
+              <th style="width:120px">&nbsp;</th>
+              <th>Best fit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tech &amp; AI Brands</td><td class="num">100</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:100%"></div></div></td>
+              <td class="col-spectra">Spectra</td>
+            </tr>
+            <tr>
+              <td>Luxury Fashion Maisons</td><td class="num">100</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:100%"></div></div></td>
+              <td class="col-monolith">Monolith</td>
+            </tr>
+            <tr>
+              <td>Watches / Jewelry / Automotive</td><td class="num">80</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:80%"></div></div></td>
+              <td class="col-aria">Aria</td>
+            </tr>
+            <tr>
+              <td>Beauty &amp; Fragrance</td><td class="num">80</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:80%"></div></div></td>
+              <td class="col-spectra">Spectra</td>
+            </tr>
+            <tr>
+              <td>Spirits &amp; Ultra-Luxury Hospitality</td><td class="num">75</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:75%"></div></div></td>
+              <td class="col-aria">Aria</td>
+            </tr>
+            <tr>
+              <td>Film, Streaming &amp; Studios</td><td class="num">48</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:48%"></div></div></td>
+              <td class="col-spectra">Spectra</td>
+            </tr>
+            <tr>
+              <td>Web3 / Digital Art</td><td class="num">45</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:45%"></div></div></td>
+              <td class="col-spectra">Spectra</td>
+            </tr>
+            <tr>
+              <td>Music &amp; Talent</td><td class="num">36</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:36%"></div></div></td>
+              <td class="col-aria">Aria</td>
+            </tr>
+            <tr>
+              <td>Sports &amp; Live Events</td><td class="num">36</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:36%"></div></div></td>
+              <td class="col-spectra">Spectra</td>
+            </tr>
+            <tr>
+              <td>Sovereign / Nation-Branding</td><td class="num">20</td>
+              <td><div class="rank-bar-bg"><div class="rank-bar-fg" style="width:20%"></div></div></td>
+              <td class="col-monolith">Monolith</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cap-split">
+        <div class="cap-card anchor">
+          <div class="lbl">Anchor — within the 40% cap</div>
+          <ul>
+            <li>Luxury Fashion Maisons — Seasonal Inscriptions</li>
+            <li>Watches / Jewelry / Automotive — Founding Inscriptions</li>
+            <li>Tech &amp; AI Brands — recurring Seasons</li>
+          </ul>
+        </div>
+        <div class="cap-card spot">
+          <div class="lbl">Spot / Flex — margin capture</div>
+          <ul>
+            <li>Beauty &amp; Fragrance — high-cadence flex bookings</li>
+            <li>Film / Streaming — event-driven, tentpole-timed</li>
+            <li>Music &amp; Talent — fastest-moving, premium timing</li>
+            <li>Web3 / Digital Art — short-notice capacity fill</li>
+            <li>Command Performances — one-off, highest rate card price</li>
+          </ul>
+          <div class="cap-meter"><div class="a"></div><div class="s"></div></div>
+          <div class="cap-meter-legend"><span>40% anchor ceiling</span><span>60% spot/flex</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seg-wrap" style="margin-top:2.5rem; grid-template-columns:1fr 1fr;">
+      <div class="cap-card" style="background:var(--paper-raised);">
+        <div class="lbl" style="color:var(--ink);">Channel, not a segment — Creative &amp; Media Agencies</div>
+        <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:0.3rem;">Most rows above transact through an agency, not direct to the end brand. One holding-company relationship can pitch the Studio Arm into a dozen client accounts at once — the fastest lever for compressing the slowest-closing segments (Fashion Maisons, Spirits &amp; Hospitality). Screen the agency's client roster, not just the agency.</p>
+      </div>
+      <div class="cap-card" style="background:var(--paper-raised);">
+        <div class="lbl" style="color:var(--ink);">New segment — Deep-Tech &amp; Life-Sciences Tenant Storytelling</div>
+        <p style="font-size:0.85rem; color:var(--ink-soft); margin-top:0.3rem;">Symphony's own commercial R&amp;D tenants — the AWS / Catalyst Data Centers / Bio-Techne-shaped customer — already fly payloads on the platform. Selling them documentary capture of their own orbital work is a 1–3 month warm upsell with near-zero incremental collision risk, not a cold luxury pitch. Best served as a distinct Spectra product line, priced as technical communications, not media.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="matrix">
+    <div class="section-head">
+      <span class="num">04</span>
+      <h2>Decision Matrix</h2>
+    </div>
+    <p class="lede">Scored 1–5 per criterion, weighted toward Brand-Collision firewall strength and Conversion potential — the two dimensions the governing brief treats as non-negotiable.</p>
+
+    <div class="matrix-scroll">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Criterion</th>
+            <th class="center">Weight</th>
+            <th class="center col-spectra">Spectra</th>
+            <th class="center col-monolith">Monolith</th>
+            <th class="center col-aria">Aria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>Brand-Collision firewall strength</th><td class="weight">3×</td><td>4</td><td>5</td><td>2</td></tr>
+          <tr><th>Luxury resonance</th><td class="weight">1×</td><td>3</td><td>5</td><td>5</td></tr>
+          <tr><th>Tech / AI halo</th><td class="weight">2×</td><td>5</td><td>2</td><td>2</td></tr>
+          <tr><th>TM / clearance risk <span style="opacity:.6">(5 = low)</span></th><td class="weight">1×</td><td>4</td><td>2</td><td>1</td></tr>
+          <tr><th>Segment coverage</th><td class="weight">1×</td><td>4</td><td>4</td><td>3</td></tr>
+          <tr><th>Conversion (pilot → anchor) potential</th><td class="weight">2×</td><td>4</td><td>4</td><td>3</td></tr>
+          <tr><th>NYC-launch-ability by Oct 2026</th><td class="weight">2×</td><td>5</td><td>3</td><td>3</td></tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Weighted total <span style="font-weight:400; opacity:.6">/ 60</span></th>
+            <td></td>
+            <td>
+              <span class="total-bar"><span class="bg" style="position:relative;"><span class="fg" style="width:83%;"></span></span>50</span>
+            </td>
+            <td>
+              <span class="total-bar"><span class="bg" style="position:relative;"><span class="fg" style="width:73%;"></span></span>44</span>
+            </td>
+            <td>
+              <span class="total-bar"><span class="bg" style="position:relative;"><span class="fg" style="width:52%;"></span></span>31</span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <section id="recommend">
+    <div class="recommend framed">
+      <span class="bl"></span><span class="br"></span>
+      <h2>Launch Spectra. Hold Monolith in reserve. Do not launch Aria as written.</h2>
+      <p>Spectra closes fastest with the buyer segment ranked highest on attractiveness (Tech &amp; AI Brands), carries no weakness that isn't solvable with a filed modifier, and fits the October 4, 2026 NYC Studio Launch timeline. Monolith's firewall is marginally stronger and should be activated once Spectra has proven the model with the slower-closing heritage-luxury segment. Aria's soloist narrative is the most resonant of the three — and the one whose own name reopens the "Adagio" trail the Studio Arm exists to close.</p>
+      <div class="risk-note">
+        <strong>Open risk:</strong> the $60B figure is a 2030–2035 category-wide estimate, not a Studio Arm revenue target — the platform's own fleet economics bound a realistic SOM to roughly $15–25M ARR by 2030. Every external-facing Studio Arm document should describe the $60B as the market this business plays adjacent to, never as the revenue it is sized to capture.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Symphony Space Inc. — Internal, Confidential</span>
+    <span>Studio Arm Brand Package · Dossier Summary</span>
+  </footer>
+
+</div>
