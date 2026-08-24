@@ -168,6 +168,43 @@
   }
   .navlinks a:hover{ color:var(--ink); border-color:var(--brass); }
 
+  .nav-controls{ display:flex; align-items:center; gap:0.6rem; }
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:2rem; height:2rem;
+    background:transparent;
+    border:1px solid var(--line-strong);
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:color .15s ease, border-color .15s ease, background .15s ease;
+    padding:0;
+  }
+  .icon-btn:hover{ color:var(--ink); border-color:var(--brass); }
+  .icon-btn svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.5; }
+  .pdf-btn{
+    display:inline-flex; align-items:center; gap:0.45rem;
+    height:2rem; padding:0 0.7rem;
+    background:transparent;
+    border:1px solid var(--line-strong);
+    color:var(--ink-soft);
+    font-family:var(--font-label);
+    font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;
+    cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .pdf-btn:hover{ color:var(--ink); border-color:var(--brass); }
+  .pdf-btn svg{ width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:1.6; }
+
+  @media print{
+    .topnav{ display:none; }
+    .cover{ animation:none; padding-top:0; }
+    body{ background:#fff; color:#000; }
+    .brand-card, .naming-card, .cap-card, .verdict-cell{ break-inside:avoid; }
+    .recommend{ background:#fff !important; color:#000 !important; border:1px solid #000; }
+    .recommend h2, .recommend p, .recommend .risk-note{ color:#000 !important; }
+    section{ padding-top:1.6rem; }
+  }
+
   /* ============ COVER ============ */
   .cover{
     padding:clamp(3.5rem,8vw,6rem) 0 clamp(2.5rem,6vw,4rem);
@@ -542,6 +579,13 @@
       <li><a href="#matrix">Decision Matrix</a></li>
       <li><a href="#recommend">Recommendation</a></li>
     </ul>
+    <div class="nav-controls">
+      <button type="button" class="pdf-btn" id="pdfBtn" aria-label="Download as PDF">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5v9M4.5 7 8 10.5 11.5 7M2.5 12.5v1.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>PDF</span>
+      </button>
+      <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark mode"></button>
+    </div>
   </div>
 </div>
 
@@ -1067,3 +1111,55 @@
   </footer>
 
 </div>
+
+<script>
+(function(){
+  var SUN = '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.6M8 12.9v1.6M14.5 8h-1.6M3.1 8H1.5M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6 3.5 3.5" stroke-linecap="round"/></svg>';
+  var MOON = '<svg viewBox="0 0 16 16"><path d="M13.5 9.3A5.8 5.8 0 0 1 6.7 2.5 5.8 5.8 0 1 0 13.5 9.3Z" stroke-linejoin="round"/></svg>';
+
+  var root = document.documentElement;
+  var btn = document.getElementById('themeBtn');
+  var STORE_KEY = 'studio-arm-dossier-theme';
+
+  function systemPrefersDark(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function effectiveIsDark(explicit){
+    if (explicit === 'dark') return true;
+    if (explicit === 'light') return false;
+    return systemPrefersDark();
+  }
+  function paint(explicit){
+    btn.innerHTML = effectiveIsDark(explicit) ? MOON : SUN;
+    btn.setAttribute('aria-pressed', effectiveIsDark(explicit) ? 'true' : 'false');
+  }
+  function getStored(){
+    try { return localStorage.getItem(STORE_KEY); } catch (e) { return null; }
+  }
+  function setStored(v){
+    try {
+      if (v) localStorage.setItem(STORE_KEY, v);
+      else localStorage.removeItem(STORE_KEY);
+    } catch (e) {}
+  }
+
+  var explicit = getStored();
+  if (explicit === 'dark' || explicit === 'light') root.setAttribute('data-theme', explicit);
+  paint(explicit);
+
+  btn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme');
+    var next;
+    if (!current) next = systemPrefersDark() ? 'light' : 'dark';
+    else if (current === 'dark') next = 'light';
+    else next = 'dark';
+    root.setAttribute('data-theme', next);
+    setStored(next);
+    paint(next);
+  });
+
+  document.getElementById('pdfBtn').addEventListener('click', function(){
+    window.print();
+  });
+})();
+</script>
